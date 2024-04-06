@@ -1,10 +1,14 @@
 use bevy::prelude::*;
 
-pub struct DebugPlugin;
+pub struct DebugPlugin {
+    pub enabled: bool,
+}
 
 impl Plugin for DebugPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, print_position);
+        if self.enabled {
+            app.add_systems(Update, print_position);
+        }
     }
 }
 
