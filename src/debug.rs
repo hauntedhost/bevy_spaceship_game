@@ -4,6 +4,12 @@ pub struct DebugPlugin {
     pub enabled: bool,
 }
 
+impl Default for DebugPlugin {
+    fn default() -> Self {
+        Self { enabled: true }
+    }
+}
+
 impl Plugin for DebugPlugin {
     fn build(&self, app: &mut App) {
         if self.enabled {

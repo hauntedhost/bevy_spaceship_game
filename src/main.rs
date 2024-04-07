@@ -1,9 +1,11 @@
+mod asset_loader;
 mod asteroid;
 mod camera;
 mod debug;
 mod movement;
 mod spaceship;
 
+use asset_loader::AssetLoaderPlugin;
 use asteroid::AsteroidPlugin;
 use bevy::prelude::*;
 use camera::CameraPlugin;
@@ -19,6 +21,7 @@ fn main() {
             brightness: 0.75,
         })
         .add_plugins(DefaultPlugins)
+        .add_plugins(AssetLoaderPlugin)
         .add_plugins(DebugPlugin { enabled: false })
         .add_plugins(CameraPlugin)
         .add_plugins(MovementPlugin)
