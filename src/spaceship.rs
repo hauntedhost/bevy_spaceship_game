@@ -47,7 +47,7 @@ fn spawn_spaceship(mut commands: Commands, scene_assets: Res<SceneAssets>) {
 
 fn spaceship_movement_controls(
     mut query: Query<(&mut Transform, &mut Velocity), With<Spaceship>>,
-    keyboard_input: Res<Input<KeyCode>>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
 ) {
     let (mut transform, mut velocity) = query.single_mut();
@@ -56,23 +56,23 @@ fn spaceship_movement_controls(
     let mut movement = 0.0;
 
     // barrel roll
-    if keyboard_input.pressed(KeyCode::K) {
+    if keyboard_input.pressed(KeyCode::KeyK) {
         roll = -ROLL_SPEED * time.delta_seconds();
-    } else if keyboard_input.pressed(KeyCode::L) {
+    } else if keyboard_input.pressed(KeyCode::KeyL) {
         roll = ROLL_SPEED * time.delta_seconds();
     }
 
     // y-axis rotate
-    if keyboard_input.pressed(KeyCode::D) {
+    if keyboard_input.pressed(KeyCode::KeyD) {
         rotation = -ROTATION_SPEED * time.delta_seconds();
-    } else if keyboard_input.pressed(KeyCode::A) {
+    } else if keyboard_input.pressed(KeyCode::KeyA) {
         rotation = ROTATION_SPEED * time.delta_seconds();
     }
 
     // forward/reverse movement
-    if keyboard_input.pressed(KeyCode::S) {
+    if keyboard_input.pressed(KeyCode::KeyS) {
         movement = -MOVEMENT_SPEED;
-    } else if keyboard_input.pressed(KeyCode::W) {
+    } else if keyboard_input.pressed(KeyCode::KeyW) {
         movement = MOVEMENT_SPEED;
     }
 
@@ -84,7 +84,7 @@ fn spaceship_movement_controls(
 fn spaceship_weapon_controls(
     mut commands: Commands,
     query: Query<&Transform, With<Spaceship>>,
-    keyboard_input: Res<Input<KeyCode>>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
     scene_assets: Res<SceneAssets>,
 ) {
     let transform = query.single();
