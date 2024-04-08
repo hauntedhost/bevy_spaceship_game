@@ -20,11 +20,14 @@ fn main() {
         .insert_resource(ClearColor(Color::rgb(0.1, 0.0, 0.15)))
         .insert_resource(AmbientLight {
             color: Color::default(),
-            brightness: 0.75,
+            brightness: 1_000.,
         })
         .add_plugins(DefaultPlugins)
         .add_plugins(AssetLoaderPlugin)
-        .add_plugins(DebugPlugin { enabled: false })
+        .add_plugins(DebugPlugin {
+            perf_ui: true,
+            ..default()
+        })
         .add_plugins(CameraPlugin)
         .add_plugins(CollisionDetectionPlugin)
         .add_plugins(MovementPlugin)
