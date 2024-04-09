@@ -3,6 +3,7 @@ mod asteroid;
 mod camera;
 mod collission_detection;
 mod debug;
+mod despawn;
 mod movement;
 mod spaceship;
 
@@ -12,6 +13,7 @@ use bevy::prelude::*;
 use camera::CameraPlugin;
 use collission_detection::CollisionDetectionPlugin;
 use debug::DebugPlugin;
+use despawn::DespawnPlugin;
 use movement::MovementPlugin;
 use spaceship::SpaceshipPlugin;
 
@@ -25,6 +27,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_plugins(AssetLoaderPlugin)
         .add_plugins(DebugPlugin { enabled: true })
+        .add_plugins(DespawnPlugin)
         .add_plugins(CameraPlugin)
         .add_plugins(CollisionDetectionPlugin)
         .add_plugins(MovementPlugin)

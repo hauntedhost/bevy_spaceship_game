@@ -4,6 +4,7 @@ use std::ops::Range;
 
 use crate::asset_loader::SceneAssets;
 use crate::collission_detection::Collider;
+use crate::despawn::DespawnWhenRemote;
 use crate::movement::{Acceleration, MovingObjectBundle, Velocity};
 
 const RADIUS: f32 = 2.5;
@@ -74,6 +75,7 @@ fn spawn_asteroid(
             },
         },
         Asteroid,
+        DespawnWhenRemote,
     ));
 }
 
