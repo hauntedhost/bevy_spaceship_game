@@ -24,10 +24,7 @@ fn main() {
         })
         .add_plugins(DefaultPlugins)
         .add_plugins(AssetLoaderPlugin)
-        .add_plugins(DebugPlugin {
-            perf_ui: true,
-            ..default()
-        })
+        .add_plugins(DebugPlugin { enabled: true })
         .add_plugins(CameraPlugin)
         .add_plugins(CollisionDetectionPlugin)
         .add_plugins(MovementPlugin)
