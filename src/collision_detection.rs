@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use bevy::utils::HashMap;
 
+use crate::asteroid::Asteroid;
 use crate::schedule::InGameSet;
 
 #[derive(Component, Debug)]
@@ -25,6 +26,10 @@ impl Plugin for CollisionDetectionPlugin {
         app.add_systems(
             Update,
             collision_detection.in_set(InGameSet::CollisionDetection),
+        )
+        .add_systems(
+            Update,
+            (handle_collisions::<Asteroid>).in_set(InGameSet::DespawnEntities),
         );
     }
 }
@@ -57,6 +62,20 @@ fn collision_detection(mut query: Query<(Entity, &GlobalTransform, &mut Collider
             collider
                 .colliding_entities
                 .extend(collisions.iter().copied());
+        }
+    }
+}
+
+fn handle_collisions<T: Component>(
+    mut commands: Commands,
+    query: Query<(Entity, &Collider), With<T>>,
+) {
+    for (entity, collider) in query.iter() {
+        for &collided_entity in collider.colliding_entities.iter() {
+            if query.get(collided_entity).is_ok() {
+                continue;
+            }
+            commands.entity(entity).despawn_recursive();
         }
     }
 }
