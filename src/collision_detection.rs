@@ -1,6 +1,8 @@
 use bevy::prelude::*;
 use bevy::utils::HashMap;
 
+use crate::schedule::InGameSet;
+
 #[derive(Component, Debug)]
 pub struct Collider {
     pub radius: f32,
@@ -20,7 +22,10 @@ pub struct CollisionDetectionPlugin;
 
 impl Plugin for CollisionDetectionPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, collision_detection);
+        app.add_systems(
+            Update,
+            collision_detection.in_set(InGameSet::CollisionDetection),
+        );
     }
 }
 

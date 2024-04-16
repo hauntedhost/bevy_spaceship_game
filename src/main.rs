@@ -5,6 +5,7 @@ mod collision_detection;
 mod debug;
 mod despawn;
 mod movement;
+mod schedule;
 mod spaceship;
 
 use asset_loader::AssetLoaderPlugin;

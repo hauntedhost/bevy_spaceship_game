@@ -6,6 +6,7 @@ use crate::asset_loader::SceneAssets;
 use crate::collision_detection::Collider;
 use crate::despawn::DespawnWhenRemote;
 use crate::movement::{Acceleration, MovingObjectBundle, Velocity};
+use crate::schedule::InGameSet;
 
 const RADIUS: f32 = 2.5;
 const VELOCITY_SCALAR: f32 = 5.0;
@@ -32,7 +33,8 @@ impl Plugin for AsteroidPlugin {
         })
         .add_systems(
             Update,
-            (spawn_asteroid, rotate_asteroids, handle_asteroid_collisions),
+            (spawn_asteroid, rotate_asteroids, handle_asteroid_collisions)
+                .in_set(InGameSet::EntityUpdates),
         );
     }
 }

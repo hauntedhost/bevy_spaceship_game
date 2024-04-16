@@ -4,6 +4,7 @@ use bevy::prelude::*;
 use iyes_perf_ui::diagnostics::{PerfUiEntryEntityCount, PerfUiEntryFPS, PerfUiEntryMemUsage};
 use iyes_perf_ui::{PerfUiAppExt, PerfUiEntry, PerfUiPlugin, PerfUiRoot};
 
+use crate::schedule::InGameSet;
 use crate::spaceship::Spaceship;
 
 pub struct DebugPlugin {
@@ -26,7 +27,10 @@ impl Plugin for DebugPlugin {
                 .init_resource::<SpaceshipPosition>()
                 .add_perf_ui_entry_type::<PerfUiSpaceshipPosition>()
                 .add_systems(Startup, add_perf)
-                .add_systems(Update, update_spaceship_position);
+                .add_systems(
+                    Update,
+                    update_spaceship_position.after(InGameSet::EntityUpdates),
+                );
         }
     }
 }

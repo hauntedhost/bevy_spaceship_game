@@ -1,5 +1,7 @@
 use bevy::prelude::*;
 
+use crate::schedule::InGameSet;
+
 const DESPAWN_DISTANCE: f32 = 100.;
 
 #[derive(Component, Debug)]
@@ -9,7 +11,10 @@ pub struct DespawnPlugin;
 
 impl Plugin for DespawnPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, despawn_remote_entities);
+        app.add_systems(
+            Update,
+            despawn_remote_entities.in_set(InGameSet::DespawnEntities),
+        );
     }
 }
 

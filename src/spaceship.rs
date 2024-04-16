@@ -2,6 +2,7 @@ use crate::asset_loader::SceneAssets;
 use crate::collision_detection::Collider;
 use crate::despawn::DespawnWhenRemote;
 use crate::movement::{Acceleration, MovingObjectBundle, Velocity};
+use crate::schedule::InGameSet;
 use bevy::prelude::*;
 
 const SPACESHIP_RADIUS: f32 = 5.;
@@ -25,7 +26,9 @@ impl Plugin for SpaceshipPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, spawn_spaceship).add_systems(
             Update,
-            (spaceship_movement_controls, spaceship_weapon_controls).chain(),
+            (spaceship_movement_controls, spaceship_weapon_controls)
+                .chain()
+                .in_set(InGameSet::UserInput),
         );
     }
 }
