@@ -20,9 +20,9 @@ impl Collider {
     }
 }
 
-pub struct CollisionDetectionPlugin;
+pub struct CollisionPlugin;
 
-impl Plugin for CollisionDetectionPlugin {
+impl Plugin for CollisionPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             Update,

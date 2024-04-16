@@ -15,11 +15,11 @@ impl Plugin for SchedulePlugin {
         app.configure_sets(
             Update,
             (
+                InGameSet::CollisionDetection,
                 InGameSet::DespawnEntities,
                 // custom flush point here, via apply_deferred below
                 InGameSet::UserInput,
                 InGameSet::EntityUpdates,
-                InGameSet::CollisionDetection,
             )
                 .chain(),
         )
