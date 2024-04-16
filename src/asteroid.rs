@@ -32,11 +32,7 @@ impl Plugin for AsteroidPlugin {
         })
         .add_systems(
             Update,
-            (
-                spawn_asteroid,
-                rotate_asteroids,
-                handle_asteroid_collisions,
-            ),
+            (spawn_asteroid, rotate_asteroids, handle_asteroid_collisions),
         );
     }
 }
