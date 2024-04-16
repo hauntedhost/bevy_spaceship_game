@@ -20,14 +20,14 @@ pub struct CollisionDetectionPlugin;
 
 impl Plugin for CollisionDetectionPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, collission_detection);
+        app.add_systems(Update, collision_detection);
     }
 }
 
-fn collission_detection(mut query: Query<(Entity, &GlobalTransform, &mut Collider)>) {
+fn collision_detection(mut query: Query<(Entity, &GlobalTransform, &mut Collider)>) {
     let mut colliding_entities: HashMap<Entity, Vec<Entity>> = HashMap::new();
 
-    // Detect collission
+    // Detect collision
     for (entity_a, transform_a, collider_a) in query.iter() {
         for (entity_b, transform_b, collider_b) in query.iter() {
             if entity_a != entity_b {

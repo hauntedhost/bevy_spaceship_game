@@ -3,7 +3,7 @@ use rand::Rng;
 use std::ops::Range;
 
 use crate::asset_loader::SceneAssets;
-use crate::collission_detection::Collider;
+use crate::collision_detection::Collider;
 use crate::despawn::DespawnWhenRemote;
 use crate::movement::{Acceleration, MovingObjectBundle, Velocity};
 
@@ -35,7 +35,7 @@ impl Plugin for AsteroidPlugin {
             (
                 spawn_asteroid,
                 rotate_asteroids,
-                handle_asteroid_collissions,
+                handle_asteroid_collisions,
             ),
         );
     }
@@ -85,7 +85,7 @@ fn rotate_asteroids(mut query: Query<&mut Transform, With<Asteroid>>, time: Res<
     }
 }
 
-fn handle_asteroid_collissions(
+fn handle_asteroid_collisions(
     mut commands: Commands,
     query: Query<(Entity, &Collider), With<Asteroid>>,
 ) {

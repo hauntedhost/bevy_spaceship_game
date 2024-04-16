@@ -1,7 +1,7 @@
 mod asset_loader;
 mod asteroid;
 mod camera;
-mod collission_detection;
+mod collision_detection;
 mod debug;
 mod despawn;
 mod movement;
@@ -11,7 +11,7 @@ use asset_loader::AssetLoaderPlugin;
 use asteroid::AsteroidPlugin;
 use bevy::prelude::*;
 use camera::CameraPlugin;
-use collission_detection::CollisionDetectionPlugin;
+use collision_detection::CollisionDetectionPlugin;
 use debug::DebugPlugin;
 use despawn::DespawnPlugin;
 use movement::MovementPlugin;

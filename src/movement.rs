@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::collission_detection::Collider;
+use crate::collision_detection::Collider;
 
 pub struct MovementPlugin;
 

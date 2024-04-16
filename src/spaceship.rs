@@ -1,5 +1,5 @@
 use crate::asset_loader::SceneAssets;
-use crate::collission_detection::Collider;
+use crate::collision_detection::Collider;
 use crate::despawn::DespawnWhenRemote;
 use crate::movement::{Acceleration, MovingObjectBundle, Velocity};
 use bevy::prelude::*;
