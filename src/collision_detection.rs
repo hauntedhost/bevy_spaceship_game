@@ -3,6 +3,7 @@ use bevy::utils::HashMap;
 
 use crate::asteroid::Asteroid;
 use crate::schedule::InGameSet;
+use crate::spaceship::Spaceship;
 
 #[derive(Component, Debug)]
 pub struct Collider {
@@ -29,7 +30,11 @@ impl Plugin for CollisionDetectionPlugin {
         )
         .add_systems(
             Update,
-            (handle_collisions::<Asteroid>).in_set(InGameSet::DespawnEntities),
+            (
+                handle_collisions::<Asteroid>,
+                handle_collisions::<Spaceship>,
+            )
+                .in_set(InGameSet::DespawnEntities),
         );
     }
 }

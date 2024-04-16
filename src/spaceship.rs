@@ -54,7 +54,9 @@ fn spaceship_movement_controls(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
 ) {
-    let (mut transform, mut velocity) = query.single_mut();
+    let Ok((mut transform, mut velocity)) = query.get_single_mut() else {
+        return;
+    };
     let mut rotation = 0.0;
     let mut roll = 0.0;
     let mut movement = 0.0;
@@ -91,7 +93,9 @@ fn spaceship_weapon_controls(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     scene_assets: Res<SceneAssets>,
 ) {
-    let transform = query.single();
+    let Ok(transform) = query.get_single() else {
+        return;
+    };
 
     if keyboard_input.pressed(KeyCode::Space) {
         let missile_transform = Transform::from_translation(
