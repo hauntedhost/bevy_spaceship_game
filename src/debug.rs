@@ -4,6 +4,7 @@ use bevy::prelude::*;
 use iyes_perf_ui::diagnostics::{PerfUiEntryEntityCount, PerfUiEntryFPS, PerfUiEntryMemUsage};
 use iyes_perf_ui::{PerfUiAppExt, PerfUiEntry, PerfUiPlugin, PerfUiRoot};
 
+use crate::health::Health;
 use crate::schedule::InGameSet;
 use crate::spaceship::Spaceship;
 
@@ -25,11 +26,12 @@ impl Plugin for DebugPlugin {
                 .add_plugins(bevy::diagnostic::SystemInformationDiagnosticsPlugin)
                 .add_plugins(PerfUiPlugin)
                 .init_resource::<SpaceshipStatus>()
-                .add_perf_ui_entry_type::<PerfUiSpaceshipStatus>()
+                .add_perf_ui_entry_type::<PerfUiSpaceshipPosition>()
+                .add_perf_ui_entry_type::<PerfUiSpaceshipHealth>()
                 .add_systems(Startup, add_perf)
                 .add_systems(
                     Update,
-                    update_spaceship_position.after(InGameSet::EntityUpdates),
+                    update_spaceship_status.after(InGameSet::EntityUpdates),
                 );
         }
     }
@@ -41,22 +43,23 @@ fn add_perf(mut commands: Commands) {
         PerfUiEntryFPS::default(),
         PerfUiEntryMemUsage::default(),
         PerfUiEntryEntityCount::default(),
-        PerfUiSpaceshipStatus::default(),
+        PerfUiSpaceshipPosition::default(),
+        PerfUiSpaceshipHealth::default(),
     ));
 }
 
-// Custom PerfUiEntry for spaceship status
+// Custom PerfUiEntry for Spaceship status
 #[derive(Resource, Debug, Default)]
 struct SpaceshipStatus {
     translation: Vec3,
-    dead: bool,
+    health: f32,
 }
 
 #[derive(Component, Default)]
-struct PerfUiSpaceshipStatus;
+struct PerfUiSpaceshipPosition;
 
-impl PerfUiEntry for PerfUiSpaceshipStatus {
-    type Value = SpaceshipStatus;
+impl PerfUiEntry for PerfUiSpaceshipPosition {
+    type Value = (f32, f32);
     type SystemParam = SRes<SpaceshipStatus>;
 
     fn label(&self) -> &str {
@@ -71,20 +74,48 @@ impl PerfUiEntry for PerfUiSpaceshipStatus {
         &self,
         status: &mut <Self::SystemParam as SystemParam>::Item<'_, '_>,
     ) -> Option<Self::Value> {
-        Some(SpaceshipStatus {
-            translation: status.translation,
-            dead: status.dead,
-        })
+        let Vec3 { x, y: _, z: y } = status.translation;
+        Some((x, y))
     }
 
-    fn format_value(&self, status: &Self::Value) -> String {
-        let Vec3 { x, y: _, z } = status.translation;
-        let coords = format!("{:.2} x {:.2}", x, z);
+    fn format_value(&self, (x, y): &Self::Value) -> String {
+        let coords = format!("{:.2} x {:.2}", x, y);
         coords
     }
 
-    fn value_color(&self, status: &Self::Value) -> Option<Color> {
-        if status.dead {
+    fn width_hint(&self) -> usize {
+        16
+    }
+}
+
+#[derive(Component, Default)]
+struct PerfUiSpaceshipHealth;
+
+impl PerfUiEntry for PerfUiSpaceshipHealth {
+    type Value = f32;
+    type SystemParam = SRes<SpaceshipStatus>;
+
+    fn label(&self) -> &str {
+        "Ship health"
+    }
+
+    fn sort_key(&self) -> i32 {
+        5
+    }
+
+    fn update_value(
+        &self,
+        status: &mut <Self::SystemParam as SystemParam>::Item<'_, '_>,
+    ) -> Option<Self::Value> {
+        Some(status.health)
+    }
+
+    fn format_value(&self, value: &Self::Value) -> String {
+        value.to_string()
+    }
+
+    fn value_color(&self, value: &Self::Value) -> Option<Color> {
+        if *value <= 0.0 {
             return Some(Color::ORANGE_RED);
         } else {
             return None;
@@ -96,13 +127,12 @@ impl PerfUiEntry for PerfUiSpaceshipStatus {
     }
 }
 
-fn update_spaceship_position(
-    query: Query<&Transform, With<Spaceship>>,
+fn update_spaceship_status(
+    query: Query<(&Transform, &Health), With<Spaceship>>,
     mut status: ResMut<SpaceshipStatus>,
 ) {
-    if let Ok(transform) = query.get_single() {
+    if let Ok((transform, health)) = query.get_single() {
         status.translation = transform.translation;
-    } else {
-        status.dead = true;
+        status.health = health.value;
     }
 }

@@ -3,18 +3,21 @@ use rand::Rng;
 use std::ops::Range;
 
 use crate::asset_loader::SceneAssets;
-use crate::collision::Collider;
+use crate::collision::{Collider, CollisionDamage};
 use crate::despawn::DespawnWhenRemote;
+use crate::health::Health;
 use crate::movement::{Acceleration, MovingObjectBundle, Velocity};
 use crate::schedule::InGameSet;
 
-const RADIUS: f32 = 2.5;
+const RADIUS: f32 = 1.25;
 const VELOCITY_SCALAR: f32 = 5.0;
 const ACCELERATION_SCALAR: f32 = 1.0;
 const SPAWN_RANGE_X: Range<f32> = -25.0..25.0;
 const SPAWN_RANGE_Z: Range<f32> = 0.0..25.0;
 const SPAWN_TIME_SECONDS: f32 = 1.0;
 const ROTATE_SPEED: f32 = 2.5;
+const HEALTH: f32 = 80.0;
+const COLLISION_DAMAGE: f32 = 35.0;
 
 #[derive(Resource, Debug)]
 pub struct SpawnTimer {
@@ -72,6 +75,8 @@ fn spawn_asteroid(
             },
         },
         Asteroid,
+        Health::new(HEALTH),
+        CollisionDamage::new(COLLISION_DAMAGE),
         DespawnWhenRemote,
     ));
 }
